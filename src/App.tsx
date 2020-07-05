@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 //import Heap from './heaps/heap'
 import Visualizer from "./heaps/Visualizer"
 import './App.css';

@@ -2,3 +2,17 @@
     fill: #000;
     stroke: #000;
 }
+
+.heap-visualizer .arr-input{
+    min-width: 200px;
+    padding: 10px;
+}
+
+.heap-visualizer .submit-btn{
+    color: #fff;
+    background: #000;
+    border: 0;
+    padding: 6px;
+    display: block;
+    margin: 10px auto;
+}
