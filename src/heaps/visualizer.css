@@ -8,11 +8,16 @@
     padding: 10px;
 }
 
-.heap-visualizer .submit-btn{
+.heap-visualizer .action-btn{
     color: #fff;
     background: #000;
     border: 0;
     padding: 6px;
     display: block;
     margin: 10px auto;
+}
+
+.heap-visualizer .parent-node{
+    stroke: blue;
+    fill: blue;
 }
