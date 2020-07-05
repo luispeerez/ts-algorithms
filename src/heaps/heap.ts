@@ -1,34 +1,41 @@
-const Heap = (): any => {
+class Heap{
+    arr: number[];
 
-    const getLeftIndex = (i: number) => (2*i) + 1
-
-    const getLeft = (a: number[], i: number): number => {
-        return a[getLeftIndex(i)];
+    constructor(arr: number[]){
+        this.arr = arr;
+        this.buildMaxHeap()
     }
 
-    const getRightIndex = (i: number) => (2*i) + 2
+    getLeftIndex = (i: number) => (2*i) + 1
 
-    const getRight = (a: number[], i: number): number => {
-        return a[getRightIndex(i)];
+    getLeft = (a: number[], i: number): number => {
+        return a[this.getLeftIndex(i)];
     }
 
-    const getParent = (a: number[], i: number): number => {
+    getRightIndex = (i: number) => (2*i) + 2
+
+    getRight = (a: number[], i: number): number => {
+        return a[this.getRightIndex(i)];
+    }
+
+    getParent = (a: number[], i: number): number => {
         return a[Math.floor((i-1)/2)]
     }
 
-    const buildMaxHeap = (arr: number[]) => {
-        let items = [...arr]
+    buildMaxHeap = () => {
+        //let items = [...arr]
+        let items = this.arr;
         let n = items.length;
         for(let i = Math.floor( (n/2) -1 ); i >= 0; i--){
-            maxHeapify(items, i)
+            this.maxHeapify(items, i)
         }
         console.log("items heapified", items)
     }
 
-    const maxHeapify = (a: number[], i: number): void => {
+    maxHeapify = (a: number[], i: number): void => {
         let n = a.length;
-        let left = getLeft(a, i)
-        let right = getRight(a, i)
+        let left = this.getLeft(a, i)
+        let right = this.getRight(a, i)
         
         // If current item is less than its childrens
         if(a[i] < left || a[i] < right){
@@ -38,13 +45,13 @@ const Heap = (): any => {
             let biggestIdx = -1
             let biggestValue = -1;
 
-            if(left > a[i] && getLeftIndex(i) < n && left > right ){
-                biggestIdx = getLeftIndex(i)
+            if(left > a[i] && this.getLeftIndex(i) < n && left > right ){
+                biggestIdx = this.getLeftIndex(i)
                 biggestValue = left;
             }
             
-            if(right > a[i] && getRightIndex(i) < n && right > left ){
-                biggestIdx = getRightIndex(i)
+            if(right > a[i] && this.getRightIndex(i) < n && right > left ){
+                biggestIdx = this.getRightIndex(i)
                 biggestValue = right;                    
             }
 
@@ -53,14 +60,11 @@ const Heap = (): any => {
             a[i] = biggestValue
             
             // Recurse call to maxheapify childs of biggest child if affected
-            maxHeapify(a, biggestIdx)
+            this.maxHeapify(a, biggestIdx)
         }
     
     }
 
-    return {
-        buildMaxHeap
-    }
 }
 
 export default Heap;
