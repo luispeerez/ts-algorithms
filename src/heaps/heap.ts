@@ -1,9 +1,11 @@
 class Heap{
     arr: number[];
+    //traverseHeap: function;
 
     constructor(arr: number[]){
         this.arr = arr;
         this.buildMaxHeap()
+        //this.traverseHeap = this.traverseHeap;
     }
 
     getLeftIndex = (i: number) => (2*i) + 1
@@ -30,6 +32,33 @@ class Heap{
             this.maxHeapify(items, i)
         }
         console.log("items heapified", items)
+    }
+
+    convertToTree = () => {
+        let i = 0;
+
+        let head = this.traverseHelper( i, this.arr)
+        return head
+    }
+
+    traverseHelper = (i: number, a: number[]): any => {
+        if(!a[i]){
+            return
+        }
+
+        let node: any = {}
+        node.name = a[i]
+        let leftChild = this.traverseHelper(this.getLeftIndex(i), a)
+        let rightChild = this.traverseHelper(this.getRightIndex(i), a)
+        node.children = []
+        if(leftChild){
+            node.children.push(leftChild)
+        }
+        if(rightChild){
+            node.children.push(rightChild)
+        }
+        //tree = node
+        return node;
     }
 
     maxHeapify = (a: number[], i: number): void => {
