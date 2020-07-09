@@ -10,13 +10,13 @@ class Heap{
     getLeftIndex = (i: number) => (2*i) + 1
 
     getLeft = (a: number[], i: number): number => {
-        return a[this.getLeftIndex(i)] || -1;
+        return a[this.getLeftIndex(i)];
     }
 
     getRightIndex = (i: number) => (2*i) + 2
 
     getRight = (a: number[], i: number): number => {
-        return a[this.getRightIndex(i)] || -1;
+        return a[this.getRightIndex(i)];
     }
 
     getParent = (a: number[], i: number): number => {
@@ -66,45 +66,29 @@ class Heap{
 
     maxHeapify = (a: number[], i: number): void => {
         let n = a.length;
-        let left = this.getLeft(a, i)
-        let right = this.getRight(a, i)
-        
-        // If current item is less than its childrens
-        if(a[i] < left || a[i] < right){
-            
-            // Starting with current as biggest default
-            // This should change to left or right
-            let biggestIdx = -1
-            let biggestValue = a[i];
+        let largestIdx = i;
+        let leftIdx = this.getLeftIndex(i)
+        let rightIdx = this.getRightIndex(i);
 
-            console.log("comparing", a[i], left, right)
-
-            if(left > a[i] && this.getLeftIndex(i) < n && left > right ){
-                biggestIdx = this.getLeftIndex(i)
-                biggestValue = left;
-            }
-            
-            if(right > a[i] && this.getRightIndex(i) < n && right > left ){
-                biggestIdx = this.getRightIndex(i)
-                biggestValue = right;                    
-            }
-
-            console.log("biggest: ", biggestValue)
-
-            // Parent was the biggest, no need to continue traversing
-            if(biggestIdx === - 1){
-                return;
-            }
-
-            // Swap biggest child with parent
-            a[biggestIdx] = a[i]
-            a[i] = biggestValue
-                        
-
-            // Recurse call to maxheapify childs of biggest child if affected
-            this.maxHeapify(a, biggestIdx)
+        // Checking if left idx is in bounds and if its greater
+        // than parent
+        if(leftIdx < n && a[leftIdx] > a[largestIdx]){
+            largestIdx = leftIdx
         }
-    
+
+        // Checking if right idx is in bounds and if its greater
+        // than parent
+        if(rightIdx < n && a[rightIdx] > a[largestIdx]){
+            largestIdx = rightIdx
+        }
+
+        // If largest is not root
+        if(largestIdx !== i){
+            let tmp = a[i]
+            a[i] = a[largestIdx]
+            a[largestIdx] = tmp
+            this.maxHeapify(a, largestIdx)
+        }
     }
 
 }
