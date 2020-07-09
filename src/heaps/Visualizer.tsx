@@ -2,10 +2,13 @@ import React, { useState, useEffect, useCallback} from "react"
 import 'react-tree-graph/dist/style.css'
 import './visualizer.css'
 import Heap from './heap'
+import BST from '../bst/bst'
 
 const Tree = require('react-tree-graph')
 
 const defaultArrInput = "1, 3, 5, 4, 6, 13, 10, 9, 8, 15, 17"
+
+const bst = new BST([1,2,3,4,5,6,7])
 
 const Visualizer = () => {
     const [arrInput, setArrInput] = useState(defaultArrInput)
