@@ -15,6 +15,7 @@ const Visualizer = () => {
     const [heapTree, setHeapTree] = useState(null)
     const [max, setMax] = useState<number | null>(null)
     const [heap, setHeap] = useState<Heap | null>(null)
+    const [valueToInsert, setValueToInsert] = useState("")
 
     const convertInputToArray = useCallback((s: string): number[] => {
         return s.trim()
@@ -56,6 +57,20 @@ const Visualizer = () => {
 
     }, [setMax, heap, setHeapTree])
 
+    const handleValueToInsertChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        const {target: {value}} = ev;
+        setValueToInsert(value)
+    }
+
+    const handleInsert = useCallback(() => {
+        if(heap){
+            heap.insert(Number(valueToInsert))
+            let visualHead = heap.convertToTree()
+            setHeapTree(visualHead)
+        }
+    }, [setMax, heap, setHeapTree, valueToInsert])
+
+
     return (
         <div className="heap-visualizer">
             <div>
@@ -64,6 +79,11 @@ const Visualizer = () => {
                 <button onClick={handleSubmit} className="action-btn">Convert to max heap</button>
                 <button onClick={handleExtract} className="action-btn">Extract max</button>
                 <p>Max: {max}</p>
+                
+                <hr/>
+
+                <input type="text" className="arr-input" value={valueToInsert} onChange={handleValueToInsertChange} />
+                <button onClick={handleInsert} className="action-btn">Insert</button>
             </div>
             <div>
                 {heapTree && 

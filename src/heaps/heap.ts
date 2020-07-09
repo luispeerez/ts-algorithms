@@ -21,8 +21,10 @@ class Heap{
         return a[this.getRightIndex(i)];
     }
 
+    getParentIndex = (i: number) => Math.floor((i-1)/2)
+
     getParent = (a: number[], i: number): number => {
-        return a[Math.floor((i-1)/2)]
+        return a[this.getParentIndex(i)]
     }
 
     //extractMax = () => this.arr && this.arr.length ? this.arr[0] : null
@@ -35,7 +37,32 @@ class Heap{
             this.maxHeapify(items, i)
         }
     }
-    
+
+
+    insert = (value: number) :void => {
+        this.n++;
+        this.arr[this.n-1] = value
+        this.insertHelper(this.n - 1)
+    }
+
+    // Function to correct heap invariant
+    // for insertion operation
+    insertHelper = (i: number) => {
+        let parentIdx = this.getParentIndex(i)
+        let childIdx = i
+        
+        // Swapping child with parent, if child is greater
+        while(this.arr[childIdx] > this.arr[parentIdx] ){
+            const tmp = this.arr[childIdx]
+            this.arr[childIdx] = this.arr[parentIdx]
+            this.arr[parentIdx] = tmp;
+
+            // Swapping indexes too, for while loop condition
+            childIdx = parentIdx;
+            parentIdx = this.getParentIndex(childIdx)
+        }   
+    }
+
     extractMax = (): number | null => {
         if(this.n > 0){
             // Swap first with last
