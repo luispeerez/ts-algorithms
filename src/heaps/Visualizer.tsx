@@ -29,7 +29,10 @@ const Visualizer = () => {
     }
 
     const handleSubmit = useCallback(() => {
-        const heapBuilt = new Heap(convertInputToArray(arrInput))
+        const myArr = convertInputToArray(arrInput)
+        console.log("myArr", myArr)
+        const heapBuilt = new Heap(myArr)
+        console.log("heapBuilt", heapBuilt)
         let head = heapBuilt.convertToTree()   
         setHeap(heapBuilt)
         setHeapTree(head)     

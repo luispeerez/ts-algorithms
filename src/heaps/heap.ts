@@ -10,13 +10,13 @@ class Heap{
     getLeftIndex = (i: number) => (2*i) + 1
 
     getLeft = (a: number[], i: number): number => {
-        return a[this.getLeftIndex(i)];
+        return a[this.getLeftIndex(i)] || -1;
     }
 
     getRightIndex = (i: number) => (2*i) + 2
 
     getRight = (a: number[], i: number): number => {
-        return a[this.getRightIndex(i)];
+        return a[this.getRightIndex(i)] || -1;
     }
 
     getParent = (a: number[], i: number): number => {
@@ -75,7 +75,9 @@ class Heap{
             // Starting with current as biggest default
             // This should change to left or right
             let biggestIdx = -1
-            let biggestValue = -1;
+            let biggestValue = a[i];
+
+            console.log("comparing", a[i], left, right)
 
             if(left > a[i] && this.getLeftIndex(i) < n && left > right ){
                 biggestIdx = this.getLeftIndex(i)
@@ -87,10 +89,18 @@ class Heap{
                 biggestValue = right;                    
             }
 
+            console.log("biggest: ", biggestValue)
+
+            // Parent was the biggest, no need to continue traversing
+            if(biggestIdx === - 1){
+                return;
+            }
+
             // Swap biggest child with parent
             a[biggestIdx] = a[i]
             a[i] = biggestValue
-            
+                        
+
             // Recurse call to maxheapify childs of biggest child if affected
             this.maxHeapify(a, biggestIdx)
         }
