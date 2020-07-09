@@ -45,14 +45,16 @@ const Visualizer = () => {
         setHeapTree(head)     
     }, [convertInputToArray, setHeapTree, setHeap])
 
-    const handleGetMax = useCallback(() => {
+    const handleExtract = useCallback(() => {
         if(heap){
             const max = heap.extractMax()
+            let visualHead = heap.convertToTree()
             console.log(max)
             setMax(max)
+            setHeapTree(visualHead)
         }
 
-    }, [setMax, heap])
+    }, [setMax, heap, setHeapTree])
 
     return (
         <div className="heap-visualizer">
@@ -60,7 +62,7 @@ const Visualizer = () => {
                 <h1>Max heap</h1>
                 <input type="text" className="arr-input" value={arrInput} onChange={handleInputChange} />
                 <button onClick={handleSubmit} className="action-btn">Convert to max heap</button>
-                <button onClick={handleGetMax} className="action-btn">Extract max</button>
+                <button onClick={handleExtract} className="action-btn">Extract max</button>
                 <p>Max: {max}</p>
             </div>
             <div>

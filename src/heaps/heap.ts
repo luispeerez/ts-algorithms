@@ -1,9 +1,11 @@
 class Heap{
     arr: number[];
+    n: number;
     //traverseHeap: function;
 
     constructor(arr: number[]){
         this.arr = arr;
+        this.n = arr.length;
         this.buildMaxHeap()
     }
 
@@ -23,7 +25,7 @@ class Heap{
         return a[Math.floor((i-1)/2)]
     }
 
-    extractMax = () => this.arr && this.arr.length ? this.arr[0] : null
+    //extractMax = () => this.arr && this.arr.length ? this.arr[0] : null
     
 
     buildMaxHeap = () => {
@@ -33,6 +35,26 @@ class Heap{
             this.maxHeapify(items, i)
         }
     }
+    
+    extractMax = (): number | null => {
+        if(this.n > 0){
+            // Swap first with last
+            let top = this.arr[0]
+            this.arr[0] = this.arr[this.n-1];
+            this.arr[this.n-1] = top
+            
+            // Decreasing arr size
+            this.n--;
+
+            // Run maxHeapify from root to fix possible
+            // issues with heap invariant
+            this.maxHeapify(this.arr, 0)
+            return top;
+        }
+
+        return null;
+    }
+
 
     convertToTree = () => {
         let i = 0;
@@ -51,8 +73,14 @@ class Heap{
                 className: i === 0 ? "parent-node" : ""
             }
         }
-        let leftChild = this.traverseHelper(this.getLeftIndex(i), a)
-        let rightChild = this.traverseHelper(this.getRightIndex(i), a)
+
+        const leftIdx = this.getLeftIndex(i);
+        const rightIdx = this.getRightIndex(i);
+
+        // Only grabbing values if those are
+        // not exceeding bounds of n
+        let leftChild = leftIdx < this.n ? this.traverseHelper(leftIdx, a) : null
+        let rightChild = rightIdx < this.n ? this.traverseHelper(rightIdx, a): null
         node.children = []
         if(leftChild){
             node.children.push(leftChild)
@@ -65,20 +93,19 @@ class Heap{
     }
 
     maxHeapify = (a: number[], i: number): void => {
-        let n = a.length;
         let largestIdx = i;
         let leftIdx = this.getLeftIndex(i)
         let rightIdx = this.getRightIndex(i);
 
         // Checking if left idx is in bounds and if its greater
         // than parent
-        if(leftIdx < n && a[leftIdx] > a[largestIdx]){
+        if(leftIdx < this.n && a[leftIdx] > a[largestIdx]){
             largestIdx = leftIdx
         }
 
         // Checking if right idx is in bounds and if its greater
         // than parent
-        if(rightIdx < n && a[rightIdx] > a[largestIdx]){
+        if(rightIdx < this.n && a[rightIdx] > a[largestIdx]){
             largestIdx = rightIdx
         }
 
