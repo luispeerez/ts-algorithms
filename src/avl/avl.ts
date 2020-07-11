@@ -2,30 +2,13 @@ interface Node{
     value: number;
     left: Node | null;
     right: Node | null;
+    parent: Node | null
 }
 
-class BST{
+class AVL{
     head: Node | null;
-    constructor(sortedArr: number[]){
-        this.head = this.toBST(sortedArr)
-        console.log("this.head", this.head)
-    }
-
-    toBST = (arr: number[]): Node | null => {
-        return this.toBSTHelper(arr, 0, arr.length - 1)
-    }
-
-    // Using a sorted array
-    toBSTHelper = (arr: number[], left: number, right: number): Node | null => {
-        if(left > right){
-            return null;
-        }
-
-        const m = left + (Math.floor((right - left) / 2))
-        const node: Node = {value: arr[m], left: null, right: null}
-        node.left = this.toBSTHelper(arr, left, m-1)
-        node.right = this.toBSTHelper(arr, m+1, right)
-        return node;
+    constructor(){
+        this.head = null
     }
 
 
@@ -35,7 +18,7 @@ class BST{
 
     insertHelper = (x: number, node: Node | null): Node => {
         if(node === null){
-            const newNode : Node = {value: x, left: null, right: null} 
+            const newNode : Node = {value: x, left: null, right: null, parent: null} 
             return newNode
         }
 
@@ -46,12 +29,14 @@ class BST{
 
         if(x < node.value){
             node.left = this.insertHelper(x, node.left)
+            node.left.parent = node
         }else{
 
             /**
              * If not the space should be at right
              */
             node.right = this.insertHelper(x, node.right)
+            node.right.parent = node;
         }
 
         return node
@@ -82,4 +67,4 @@ class BST{
     }
 }
 
-export default BST
+export default AVL
