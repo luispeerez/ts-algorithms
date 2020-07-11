@@ -9,8 +9,9 @@ const defaultArrInput = "1,2,3,4,5,6,7"
 
 const Visualizer = () => {
     const [arrInput, setArrInput] = useState(defaultArrInput)
-    const [heap, setHead] = useState<BST | null>(null)
+    const [bst, setBst] = useState<BST | null>(null)
     const [visualizerHead, setVisualizerHead] = useState<VisualizerNode | null>(null)
+    const [insertVal, setInsertVal] = useState("")
 
     const convertInputToArray = useCallback((s: string): number[] => {
         return s.trim()
@@ -27,16 +28,29 @@ const Visualizer = () => {
     const handleSubmit = useCallback(() => {
         const bstBuilt = new BST(convertInputToArray(arrInput))
         let vHead = bstBuilt.toVisualizerFormat()   
-        setHead(bstBuilt)
+        setBst(bstBuilt)
         setVisualizerHead(vHead)     
-    }, [setHead, convertInputToArray, arrInput, setVisualizerHead])
+    }, [setBst, convertInputToArray, arrInput, setVisualizerHead])
 
     useEffect(() => {
         const bstBuilt = new BST(convertInputToArray(defaultArrInput))
         let vHead = bstBuilt.toVisualizerFormat()   
-        setHead(bstBuilt)
+        setBst(bstBuilt)
         setVisualizerHead(vHead)     
-    }, [setHead, convertInputToArray, arrInput, setVisualizerHead])
+    }, [setBst, convertInputToArray, arrInput, setVisualizerHead])
+
+    const handleInsertValueChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+        const {target: {value}} = ev;
+        setInsertVal((value))
+    }
+
+    const handleInsert = useCallback(() => {
+        bst?.insert(Number(insertVal))
+        if(bst){
+            let vHead = bst.toVisualizerFormat()   
+            setVisualizerHead(vHead)         
+        }
+    }, [setBst, convertInputToArray, insertVal, setVisualizerHead, bst])
 
 
     return (
@@ -45,6 +59,12 @@ const Visualizer = () => {
                 <h1>BST</h1>
                 <input type="text" className="arr-input" value={arrInput} onChange={handleInputChange} />
                 <button onClick={handleSubmit} className="action-btn">Convert to BST</button>
+
+                <hr/>
+
+                <input type="text" className="arr-input" value={insertVal} onChange={handleInsertValueChange} />
+                <button onClick={handleInsert} className="action-btn">Insert value</button>
+
             </div>
             <div>
                 {visualizerHead && 
