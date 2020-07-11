@@ -3,6 +3,7 @@ interface Node{
     left: Node | null;
     right: Node | null;
     parent: Node | null
+    height: number
 }
 
 class AVL{
@@ -14,11 +15,18 @@ class AVL{
 
     insert = (x: number): void => {
         this.head = this.insertHelper(x, this.head)
+        console.log(this.head)
     } 
 
     insertHelper = (x: number, node: Node | null): Node => {
         if(node === null){
-            const newNode : Node = {value: x, left: null, right: null, parent: null} 
+            const newNode : Node = {
+                value: x, 
+                left: null, 
+                right: null, 
+                parent: null,
+                height: 0
+            } 
             return newNode
         }
 
@@ -39,8 +47,60 @@ class AVL{
             node.right.parent = node;
         }
 
+        let nodeLeftHeight = node.left ? node.left.height : -1;
+        let nodeRightHeight = node.right ? node.right.height : -1;
+
+        // Checking if it is unbalanced
+        if(Math.abs(nodeLeftHeight - nodeRightHeight) > 1 ){
+            node = this.rotateTree(node)
+
+            // Calculating heights again, rotation
+            nodeLeftHeight = node.left ? node.left.height : -1;
+            nodeRightHeight = node.right ? node.right.height : -1;
+        }
+
+
+        node.height = 1 + Math.max(nodeLeftHeight, nodeRightHeight);
+
         return node
     }
+
+    rotateTree = (node: Node): Node => {
+        // Handling the case where path is straight
+        // TODO: Handle zigzag case
+        const nodeLeftHeight = node.left ? node.left.height : -1;
+        const nodeRightHeight = node.right ? node.right.height : -1;
+
+        // If left heavy
+        if(nodeLeftHeight > nodeRightHeight){
+            return this.rotateRight(node)
+        }
+
+        // Right heavy
+        return this.rotateLeft(node)
+
+    }
+
+    rotateRight = (oldRoot: Node): Node => {
+        let defaultNode: Node = {value: -1, parent: null, height: -1, right: null, left: null};
+        let root = oldRoot.left;
+        oldRoot.left = root ? root.right : null
+        if(root){
+            root.right = oldRoot || null
+        }
+        return root || defaultNode;
+    } 
+
+    rotateLeft = (oldRoot: Node): Node => {
+        let defaultNode: Node = {value: -1, parent: null, height: -1, right: null, left: null};
+        let root = oldRoot.right;
+        oldRoot.right = root ? root.left : null
+        if(root){
+            root.left = oldRoot || null
+        }
+        return root || defaultNode;
+    } 
+
 
     toVisualizerFormat = (): VisualizerNode | null => {
         if(this.head){
