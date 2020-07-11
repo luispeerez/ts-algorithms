@@ -71,7 +71,12 @@ const Visualizer = () => {
                     <Tree
                         data={visualizerHead}
                         height={400}
-                        width={400}/>
+                        width={400}
+                        svgProps={{
+                            transform: 'rotate(90)'
+                        }}
+
+                    />
                 }
             </div>
         </div>

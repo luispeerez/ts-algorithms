@@ -65,12 +65,17 @@ class BST{
 
     toVisualizerFormatHelper = (node: Node): VisualizerNode => {
         const vNode: VisualizerNode = {name: node.value, children: []}
-        if(node.left){
-            vNode.children.push(this.toVisualizerFormatHelper(node.left))
-        }
+
+        // Adding right first because of visualizer horizontal render
+
         if(node.right){
             vNode.children.push(this.toVisualizerFormatHelper(node.right))
         }
+
+        if(node.left){
+            vNode.children.push(this.toVisualizerFormatHelper(node.left))
+        }
+
 
         return vNode;
     }
