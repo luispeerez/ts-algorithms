@@ -15,9 +15,11 @@ class HashTable {
     table: (Node | null)[]
     usedSlots: number;
     growFactor: number;
+    shrinkFactor: number;
 
     constructor(){
         this.growFactor = 2;
+        this.shrinkFactor = 4;
         this.tableSize = 2
         this.usedSlots = 0;
         this.table = new Array(this.tableSize)
@@ -66,6 +68,7 @@ class HashTable {
 
     get = (key:string | number) => {
         const idx = this.hash(key)
+        console.log("key", key,this.table)
         if(!this.table[idx]){
             return null;
         }
@@ -89,6 +92,12 @@ class HashTable {
 
         if(node.key === key){
             this.table[idx] = null;
+            this.usedSlots--;
+
+            if( this.usedSlots <= this.tableSize / this.shrinkFactor ){
+                this.shrinkTable()
+            }
+
             return;
         }
 
@@ -100,7 +109,23 @@ class HashTable {
             node = node.next
         }
         return;   
+    }
 
+    shrinkTable = (): void => {
+        this.tableSize = this.tableSize / 2;
+        this.usedSlots = 0;
+        let auxTable = this.table
+        this.table = new Array(this.tableSize);
+
+        for(let i = 0 ; i < auxTable.length; i++){
+            if(auxTable[i]){
+                let node: Node | null = auxTable[i]
+                while(node){
+                    this.insert(node.key, node.val)
+                    node = node.next
+                }
+            }
+        }
     }
 
     doubleTable = () => {
@@ -118,6 +143,36 @@ class HashTable {
                 }
             }
         }
+    }
+
+    toVisualizer = () => {
+        let visualTable: (VisualizerNode | null)[] = new Array(this.table.length)
+        for(let i = 0 ; i < this.table.length; i++){
+            if(this.table[i]){
+                let node: Node | null = this.table[i]
+                let childrenTail = null
+                let childrenHead = null
+                
+                while(node != null){
+                    let newChildren: VisualizerNode = {name: `Key: ${node?.key}, Val: ${node?.val}`, children: []}
+                    
+                    if(!childrenTail){
+                        childrenHead = newChildren
+                        childrenTail = childrenHead
+                    }else{
+                        childrenTail.children.push(newChildren)
+                        childrenTail = childrenTail.children[0]
+                    }
+                    
+                    node = node.next
+                }
+                
+                visualTable[i] = childrenHead
+            }else{
+                visualTable[i] = null
+            }
+        }
+        return visualTable
     }
 
 }

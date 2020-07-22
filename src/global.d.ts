@@ -1,4 +1,4 @@
 interface VisualizerNode{
-    name: number,
+    name: number | string,
     children: VisualizerNode[]
 }
