@@ -13,7 +13,7 @@ hTable.insert("mati", 8)
 hTable.insert("ari", 27)
 hTable.insert("luis", 25)
 
-console.log(hTable.get("mati"))
+console.log(hTable.remove("luis"))
 
 function App() {
   return (

@@ -12,14 +12,14 @@ class Node{
 
 class HashTable {
     tableSize: number;
-    table: Node[]
-    insertedValues: number;
+    table: (Node | null)[]
+    usedSlots: number;
     growFactor: number;
 
     constructor(){
         this.growFactor = 2;
         this.tableSize = 2
-        this.insertedValues = 0;
+        this.usedSlots = 0;
         this.table = new Array(this.tableSize)
     }
 
@@ -44,13 +44,13 @@ class HashTable {
         const newNode = new Node(value, key)
 
         // If table is full, double it
-        if(this.tableSize === this.insertedValues){
+        if(this.tableSize === this.usedSlots){
             this.doubleTable();
         }
 
         if(!this.table[idx]){
             this.table[idx] = newNode
-            this.insertedValues++
+            this.usedSlots++
             return
         }
 
@@ -58,8 +58,10 @@ class HashTable {
         while(n !== null && n.next !== null){
             n = n.next
         }
-        n.next = newNode
-        this.insertedValues++
+        if(n !== null){
+            n.next = newNode
+        }
+        
     }
 
     get = (key:string | number) => {
@@ -75,13 +77,35 @@ class HashTable {
             }
             node = node.next
         }
-        return null;
-        
+        return null;   
+    }
+
+    remove = (key: string | number):void => {
+        const idx = this.hash(key)
+        let node: Node | null = this.table[idx]
+        if(!node){
+            return;
+        }
+
+        if(node.key === key){
+            this.table[idx] = null;
+            return;
+        }
+
+        while(node && node.next !== null){
+            if(node.next.key === key){
+                node.next = node.next.next
+                return;
+            }
+            node = node.next
+        }
+        return;   
+
     }
 
     doubleTable = () => {
         this.tableSize = this.tableSize * this.growFactor;
-        this.insertedValues = 0;
+        this.usedSlots = 0;
         let auxTable = this.table
         this.table = new Array(this.tableSize);
 
