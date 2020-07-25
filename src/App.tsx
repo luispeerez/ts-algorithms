@@ -5,9 +5,11 @@ import AVLVisualizer from "./avl/Visualizer"
 import StackVisualizer from "./stack/Visualizer"
 import QueueVisualizer from "./queue/Visualizer"
 import HashTableVisualizer from "./hashtable/Visualizer"
+import rabinKarp from "./rabinkarp/rabinkarp"
 
 import './App.css';
 
+console.log(rabinKarp("the", "here comes the sun"))
 
 function App() {
   return (
