@@ -10,16 +10,35 @@ class RollingHash {
         this.prime = 101
         this.charCount = 0;
     }
+
+    getH = () => {
+        return Math.pow(this.alphabetSize, this.charCount - 1) % this.prime
+    }
     
     add = (c: string):void => {
         const preHash = c.charCodeAt(0)
-        this.hashValue = preHash * Math.pow(this.alphabetSize, this.charCount)
+        this.hashValue = (this.alphabetSize * this.hashValue + preHash) % this.prime
+        //this.hashValue = this.hashValue + preHash * Math.pow(this.alphabetSize, this.charCount)
         this.charCount++
     }
 
     skip = (c: string): void => {
         const preHash = c.charCodeAt(0)        
-        this.hashValue = this.hashValue - (preHash * Math.pow(this.alphabetSize, this.charCount - 1))
+        //this.hashValue = this.hashValue - (preHash * Math.pow(this.alphabetSize, this.charCount - 1))
+        //this.hashValue = this.hashValue * this.alphabetSize
+        const h = this.getH()
+
+        
+        console.log("removing", c)
+        
+        //mit
+        this.hashValue = (this.hashValue - preHash * (h % this.prime ) ) % this.prime
+        /*
+        // geekforgeeks
+        this.hashValue = (this.alphabetSize * (this.hashValue - preHash * h)) % this.prime
+        */
+        this.hashValue = this.hashValue < 0 ? this.hashValue + this.prime : this.hashValue
+        
         this.charCount--
     }
 
@@ -46,6 +65,7 @@ const rabinKarp = (pattern: string, text:string): number => {
     }
 
     for(let i = 0; i< (text.length - pattern.length); i++){
+        console.log("hash comparing", pattern, rp.hash(), text.slice(i, i+pattern.length), rt.hash())
         if(rp.hash() === rt.hash() && areSameStrs(pattern, text, i)){
             return i;
         }

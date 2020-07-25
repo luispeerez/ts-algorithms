@@ -9,7 +9,8 @@ import rabinKarp from "./rabinkarp/rabinkarp"
 
 import './App.css';
 
-console.log(rabinKarp("the", "here comes the sun"))
+console.log(rabinKarp("pata", "empatados"))
+//console.log(rabinKarp("the", "here comes the sun"))
 
 function App() {
   return (
