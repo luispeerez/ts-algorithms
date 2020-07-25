@@ -32,6 +32,7 @@ class RollingHash {
         console.log("removing", c)
         
         //mit
+        //this.hashValue = (this.hashValue - preHash * (h % this.prime ) ) % this.prime
         this.hashValue = (this.hashValue - preHash * (h % this.prime ) ) % this.prime
         /*
         // geekforgeeks
