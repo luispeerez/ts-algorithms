@@ -5,41 +5,27 @@ class RollingHash {
     charCount: number;
 
     constructor(){
-        this.hashValue = 0
         this.alphabetSize = 256;
         this.prime = 101
         this.charCount = 0;
+        this.hashValue = 0 % this.prime
     }
 
     getH = () => {
         return Math.pow(this.alphabetSize, this.charCount - 1) % this.prime
     }
     
-    add = (c: string):void => {
-        const preHash = c.charCodeAt(0)
-        this.hashValue = (this.alphabetSize * this.hashValue + preHash) % this.prime
-        //this.hashValue = this.hashValue + preHash * Math.pow(this.alphabetSize, this.charCount)
+    add = (val: number):void => {
+        this.hashValue = (this.hashValue * this.alphabetSize + val) % this.prime
         this.charCount++
     }
-
-    skip = (c: string): void => {
-        const preHash = c.charCodeAt(0)        
-        //this.hashValue = this.hashValue - (preHash * Math.pow(this.alphabetSize, this.charCount - 1))
-        //this.hashValue = this.hashValue * this.alphabetSize
+    
+    skip = (val: number): void => {
         const h = this.getH()
-
-        
-        console.log("removing", c)
-        
-        //mit
-        //this.hashValue = (this.hashValue - preHash * (h % this.prime ) ) % this.prime
-        this.hashValue = (this.hashValue - preHash * (h % this.prime ) ) % this.prime
-        /*
-        // geekforgeeks
-        this.hashValue = (this.alphabetSize * (this.hashValue - preHash * h)) % this.prime
-        */
-        this.hashValue = this.hashValue < 0 ? this.hashValue + this.prime : this.hashValue
-        
+        this.hashValue = (this.hashValue - val * h) % this.prime
+        if(this.hashValue < 0){
+            this.hashValue = this.hashValue + this.prime
+        }
         this.charCount--
     }
 
@@ -48,7 +34,7 @@ class RollingHash {
     }
 }
 
-const rabinKarp = (pattern: string, text:string): number => {
+const rabinKarp = (pattern: number[], text:number[]): number => {
     if(pattern.length > text.length){
         return -1;
     }
@@ -65,8 +51,7 @@ const rabinKarp = (pattern: string, text:string): number => {
         return 0;
     }
 
-    for(let i = 0; i< (text.length - pattern.length); i++){
-        console.log("hash comparing", pattern, rp.hash(), text.slice(i, i+pattern.length), rt.hash())
+    for(let i = 0; i< (text.length - pattern.length) + 1; i++){
         if(rp.hash() === rt.hash() && areSameStrs(pattern, text, i)){
             return i;
         }
@@ -77,7 +62,7 @@ const rabinKarp = (pattern: string, text:string): number => {
     return -1;
 }
 
-const areSameStrs = (s1: string, s2: string, textIndex: number) => {
+const areSameStrs = (s1: number[], s2: number[], textIndex: number) => {
     for(let i = 0; i<s1.length; i++){
         if(s1[i] !== s2[textIndex]){
             return false;
