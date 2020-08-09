@@ -15,12 +15,14 @@ class RollingHash {
         return Math.pow(this.alphabetSize, this.charCount - 1) % this.prime
     }
     
-    add = (val: number):void => {
+    add = (c: string):void => {
+        const val = c.charCodeAt(0)
         this.hashValue = (this.hashValue * this.alphabetSize + val) % this.prime
         this.charCount++
     }
     
-    skip = (val: number): void => {
+    skip = (c: string): void => {
+        const val = c.charCodeAt(0)
         const h = this.getH()
         this.hashValue = (this.hashValue - val * h) % this.prime
         if(this.hashValue < 0){
@@ -34,7 +36,7 @@ class RollingHash {
     }
 }
 
-const rabinKarp = (pattern: number[], text:number[]): number => {
+const rabinKarp = (pattern: string, text:string): number => {
     if(pattern.length > text.length){
         return -1;
     }
@@ -55,14 +57,18 @@ const rabinKarp = (pattern: number[], text:number[]): number => {
         if(rp.hash() === rt.hash() && areSameStrs(pattern, text, i)){
             return i;
         }
-        rt.skip(text[i])
-        rt.add(text[i+pattern.length])
+
+        // If i am still in bounds to check a next window
+        if(i < text.length - pattern.length){
+            rt.skip(text[i])
+            rt.add(text[i+pattern.length])
+        }
     }
 
     return -1;
 }
 
-const areSameStrs = (s1: number[], s2: number[], textIndex: number) => {
+const areSameStrs = (s1: string, s2: string, textIndex: number) => {
     for(let i = 0; i<s1.length; i++){
         if(s1[i] !== s2[textIndex]){
             return false;

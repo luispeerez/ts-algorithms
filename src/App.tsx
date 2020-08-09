@@ -9,8 +9,8 @@ import rabinKarp from "./rabinkarp/rabinkarp"
 
 import './App.css';
 
-console.log(rabinKarp([61, 8, 19, 91, 37], [10,20,30,61, 8, 19, 91, 37]))
-//console.log(rabinKarp("pata", "empatados"))
+console.log(rabinKarp("pata", "patada"))
+console.log(rabinKarp("pata", "empatados"))
 
 function App() {
   return (
