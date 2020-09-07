@@ -10,6 +10,7 @@ import TopoSort from "./topo-sort/topoSort";
 import Dijkstra from "./dijkstra/dijkstra";
 import BFS from "./bfs/bfs";
 import DFS from "./dfs/dfs";
+import Trie from "./trie/trie";
 
 import "./App.css";
 
@@ -28,7 +29,7 @@ let order = topoSort.bfsSort(
 console.log("order", order)
 */
 
-const dijkstra = new Dijkstra();
+/* const dijkstra = new Dijkstra();
 var graph = [
   [0, 4, 0, 0, 0, 0, 0, 8, 0],
   [4, 0, 8, 0, 0, 0, 0, 11, 0],
@@ -41,8 +42,8 @@ var graph = [
   [0, 0, 2, 0, 0, 0, 6, 7, 0],
 ];
 
-let distances = dijkstra.resolve(graph, 0);
-console.log("distances", distances);
+//let distances = dijkstra.resolve(graph, 0);
+//console.log("distances", distances); */
 
 /*
 const vertices = 4
@@ -58,6 +59,7 @@ const bfs = new BFS(vertices,edges);
 bfs.doBFS()
 */
 
+/*
 const vertices = [0, 1, 2, 3, 4, 5, 6];
 const edges = [
   [0, 4],
@@ -66,8 +68,26 @@ const edges = [
   [1, 3],
   [2, 3],
 ];
+
 const dfs = new DFS(vertices, edges);
 dfs.doDFS();
+*/
+
+const trie = new Trie();
+const words = ["the", "a", "there", "answer", "any", "by", "bye", "their"];
+for (let w of words) {
+  trie.insert(w);
+}
+
+console.log(trie.remove("bye"));
+
+/*
+const lookup = ["the", "these", "their", "thaw"];
+for (let w of lookup) {
+  console.log(`Does "${w}" exists in trie?`, trie.search(w));
+}
+
+*/
 
 function App() {
   return (
